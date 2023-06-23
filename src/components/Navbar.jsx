@@ -10,10 +10,92 @@ import avatar from '../data/avatar.jpg'
 import { Cart, Chat, Notification, UserProfile } from '.'
 import { useStateContext } from '../contexts/ContextProvider'
 
+
+const NavButton = ({ title, f, icon, color, dotColor }) => (
+  <button type="button" onClick={f} style={{ color }} className="relative x-xl rounded-full p-3 hover:bg-light-gray">
+    <span style={{ background: dotColor }} className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2">
+      { icon }
+    </span>
+  
+  </button>
+)
+
 const Navbar = () => {
+  const { activeMenu, setActiveMenu, isClicked, setIsClicked, handleClick, screenSize, setScreenSize } = useStateContext();
+
+  useEffect(() => { 
+    const handleResize = () => setScreenSize(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, [])
+
+  useEffect(() => { 
+    if(screenSize <= 900) {
+      setActiveMenu(false);
+    } else {
+      setActiveMenu(true);
+    }
+  }, [screenSize])
+  
 
   return (
-    <div>Navbar</div>
+    <div className="flex justify-between p-2 md:mx-6 position:relative">
+      <NavButton 
+        title="Menu" 
+        f={() => { setActiveMenu((prevActiveMenu) => !prevActiveMenu )}}
+        color="blue"
+        icon={<AiOutlineMenu />}
+      />
+
+      <div className="flex">
+        <NavButton 
+          title="Cart" 
+          f={() => handleClick('card')}
+          color="blue"
+          icon={<FiShoppingCart />}
+        />
+
+        <NavButton 
+          title="Chat"
+          dotColor="#03c9d7" 
+          f={() => handleClick('chat')}
+          color="blue"
+          icon={<BsChatLeft />}
+        />
+
+        <NavButton 
+          title="Notifications" 
+          dotColor="#03c9d7" 
+          f={() => handleClick('notification')}
+          color="blue"
+          icon={<RiNotification3Line />}
+        />
+
+        <NavButton 
+          title="Cart" 
+          // f={() => handleClick('card')}
+          color="blue"
+          icon={<FiShoppingCart />}
+        />
+
+        <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg" onClick={() => handleClick('userProfile')}>
+          <img src={avatar} className="rounded-full w-8 h-8" alt="avatar" />
+          <p>
+            <span className="text-gray-400 text-14">Hi,</span> {' '}
+            <span className="text-gray-40  font-bold ml-1 text-14">Josh</span>
+          </p>
+          <MdKeyboardArrowDown className="text-gray-400 text-14" />
+        </div>
+
+        { isClicked.cart && <Cart /> }
+        { isClicked.chat && <Chat /> }
+        { isClicked.notification && <Notification /> }
+        { isClicked.userProfile && <UserProfile /> }
+
+
+      </div>
+    </div>
   )
 }
 
