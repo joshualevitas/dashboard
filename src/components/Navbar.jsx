@@ -12,11 +12,9 @@ import { useStateContext } from '../contexts/ContextProvider'
 
 
 const NavButton = ({ title, f, icon, color, dotColor }) => (
-  <button type="button" onClick={f} style={{ color }} className="relative x-xl rounded-full p-3 hover:bg-light-gray">
-    <span style={{ background: dotColor }} className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2">
-      { icon }
-    </span>
-  
+  <button type="button" onClick={f} style={{ color }} className="relative text-xl rounded-full p-3 hover:bg-light-gray">
+    <span style={{ background: dotColor }} className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"/>
+    { icon }
   </button>
 )
 
@@ -40,7 +38,7 @@ const Navbar = () => {
   
 
   return (
-    <div className="flex justify-between p-2 md:mx-6 position:relative">
+    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <NavButton 
         title="Menu" 
         f={() => { setActiveMenu((prevActiveMenu) => !prevActiveMenu )}}
@@ -70,13 +68,6 @@ const Navbar = () => {
           f={() => handleClick('notification')}
           color="blue"
           icon={<RiNotification3Line />}
-        />
-
-        <NavButton 
-          title="Cart" 
-          // f={() => handleClick('card')}
-          color="blue"
-          icon={<FiShoppingCart />}
         />
 
         <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg" onClick={() => handleClick('userProfile')}>
